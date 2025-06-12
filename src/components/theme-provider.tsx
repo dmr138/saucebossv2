@@ -84,7 +84,7 @@ export function ThemeProvider({
       applyTheme(systemTheme);
     } else {
       // This handles 'light', 'dark', 'theme-forest', 'theme-dracula' directly from storage
-      if (initialPreference !== 'system') { // Ensure it's a direct theme name
+      if (initialPreference !== 'system' && Object.values(THEMES).includes(initialPreference as ThemeClassName)) { // Ensure it's a direct theme name
          console.log('[ThemeProvider] Direct theme preference detected. Applying theme:', initialPreference);
         applyTheme(initialPreference as ThemeClassName); // Cast is safe here due to prior checks
       } else {
