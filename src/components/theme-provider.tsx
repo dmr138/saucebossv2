@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
@@ -35,38 +34,29 @@ export function ThemeProvider({
 
   const applyTheme = useCallback((themeToApply: ThemeClassName) => {
     const root = window.document.documentElement;
-    console.log(`[ThemeProvider] Attempting to apply theme: ${themeToApply}`);
-    console.log('[ThemeProvider] Current HTML classList BEFORE changes:', root.classList.toString());
-
-    // Define all known theme classes that might need to be removed
+    // Remove all known theme classes first
     const allThemeClasses: ThemeClassName[] = [THEMES.DARK, THEMES.FOREST, THEMES.DRACULA];
-
     allThemeClasses.forEach(cls => {
-      if (cls && root.classList.contains(cls)) { // Ensure cls is not undefined
-        console.log(`[ThemeProvider] Removing class: ${cls}`);
+      if (cls && root.classList.contains(cls)) {
         root.classList.remove(cls);
       }
     });
-
-    // Add the new theme class, but only if it's not the 'light' theme (which implies no class)
+    // Add new theme class except if it's light (which uses no class)
     if (themeToApply !== THEMES.LIGHT) {
-      console.log(`[ThemeProvider] Adding class: ${themeToApply}`);
       root.classList.add(themeToApply);
     }
-
     setResolvedThemeState(themeToApply);
-    console.log('[ThemeProvider] Current HTML classList AFTER changes:', root.classList.toString());
-    console.log('[ThemeProvider] Resolved theme state set to:', themeToApply);
-  }, [setResolvedThemeState]);
-
+  }, []);
 
   useEffect(() => {
     setMounted(true);
     let initialPreference: ThemePreference;
+
     try {
-      const storedTheme = window.localStorage.getItem(storageKey) as ThemePreference | null;
-      if (storedTheme === 'system' || Object.values(THEMES).includes(storedTheme as ThemeClassName)) {
-        initialPreference = storedTheme;
+      const storedTheme = window.localStorage.getItem(storageKey);
+      const validThemes = [...Object.values(THEMES), 'system'];
+      if (storedTheme && validThemes.includes(storedTheme)) {
+        initialPreference = storedTheme as ThemePreference;
       } else {
         initialPreference = defaultTheme;
       }
@@ -74,41 +64,26 @@ export function ThemeProvider({
       initialPreference = defaultTheme;
       console.error('[ThemeProvider] Failed to read theme from localStorage', e);
     }
-    setThemePreferenceState(initialPreference);
-    console.log('[ThemeProvider] Initial theme preference (from storage or default):', initialPreference);
 
+    setThemePreferenceState(initialPreference);
 
     if (initialPreference === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? THEMES.DARK : THEMES.LIGHT;
-      console.log('[ThemeProvider] System preference detected. Applying theme:', systemTheme);
       applyTheme(systemTheme);
     } else {
-      // This handles 'light', 'dark', 'theme-forest', 'theme-dracula' directly from storage
-      if (initialPreference !== 'system') { // Ensure it's a direct theme name
-         console.log('[ThemeProvider] Direct theme preference detected. Applying theme:', initialPreference);
-        applyTheme(initialPreference as ThemeClassName); // Cast is safe here due to prior checks
-      } else {
-        // Fallback if initialPreference somehow still 'system' but shouldn't be here
-        console.warn('[ThemeProvider] Fallback: Applying light theme as default.')
-        applyTheme(THEMES.LIGHT);
-      }
+      applyTheme(initialPreference as ThemeClassName);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultTheme, storageKey]);
 
-
   useEffect(() => {
     if (!mounted) return;
-    console.log('[ThemeProvider] themePreference or mounted changed. Current preference:', themePreference);
 
     if (themePreference === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? THEMES.DARK : THEMES.LIGHT;
-      console.log('[ThemeProvider] System preference update. Applying theme:', systemTheme);
       applyTheme(systemTheme);
     } else {
-      // This handles 'light', 'dark', 'theme-forest', 'theme-dracula'
-      console.log('[ThemeProvider] Direct theme preference update. Applying theme:', themePreference);
-      applyTheme(themePreference as ThemeClassName); // Cast is safe here
+      applyTheme(themePreference as ThemeClassName);
     }
   }, [themePreference, applyTheme, mounted]);
 
@@ -117,7 +92,6 @@ export function ThemeProvider({
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
-      console.log('[ThemeProvider] System dark mode preference changed via media query.');
       const newSystemTheme = mediaQuery.matches ? THEMES.DARK : THEMES.LIGHT;
       applyTheme(newSystemTheme);
     };
@@ -129,7 +103,6 @@ export function ThemeProvider({
 
   const setThemePreference = (newPreference: ThemePreference) => {
     if (!mounted) return;
-    console.log('[ThemeProvider] setThemePreference called with:', newPreference);
     try {
       window.localStorage.setItem(storageKey, newPreference);
     } catch (e) {
@@ -141,9 +114,8 @@ export function ThemeProvider({
   const value = {
     themePreference,
     setThemePreference,
-    resolvedTheme: mounted ? resolvedTheme : THEMES.LIGHT, // Avoid hydration mismatch for resolvedTheme
+    resolvedTheme: mounted ? resolvedTheme : THEMES.LIGHT,
   };
-
 
   return (
     <ThemeProviderContext.Provider value={value}>
