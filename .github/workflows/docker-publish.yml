@@ -24,4 +24,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: yourdockerhubusername/sauceboss:latest
+          tags: dmr138/sodium-citrate-calc:latest
