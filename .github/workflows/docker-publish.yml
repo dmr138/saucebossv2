@@ -1,16 +1,17 @@
-name: Build and Publish Docker Image
+name: Build and Push Docker Image
 
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
+  workflow_dispatch:  # This adds the manual trigger
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Log in to Docker Hub
@@ -22,6 +23,5 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
           push: true
-          tags: dmr138/sodium-citrate-calc:latest
+          tags: yourdockerhubusername/sauceboss:latest
