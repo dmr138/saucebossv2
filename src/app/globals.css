@@ -1,26 +1,173 @@
-@import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 208 100% 97%; /* Light Gray #F0F8FF */
+    --foreground: 210 20% 20%; /* Darker text for readability */
+
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 210 20% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 20% 20%;
+
+    --primary: 197 71% 73%;    /* Sky Blue #87CEEB */
+    --primary-foreground: 197 60% 15%; /* Dark blue text for on primary */
+
+    --secondary: 208 60% 90%; /* Lighter version of background or a neutral gray */
+    --secondary-foreground: 210 20% 15%;
+
+    --muted: 208 50% 85%;
+    --muted-foreground: 208 30% 45%; /* Slightly lighter muted text */
+
+    --accent: 175 58% 65%;     /* Soft Teal #70DBD1 */
+    --accent-foreground: 175 50% 15%;  /* Dark teal text for on accent */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 208 20% 80%;
+    --input: 208 30% 93%; /* Slightly lighter input background */
+    --ring: 197 71% 65%; /* Primary color for rings, slightly darker for better visibility */
+
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark { /* Black and Grey Dark Theme with Darker Blue Sliders/Primary Elements */
+    --background: 220 10% 10%;
+    --foreground: 0 0% 95%;
+    --card: 220 10% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 10% 10%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 205 90% 30%; /* Darker Blue for primary elements */
+    --primary-foreground: 0 0% 98%; /* Light text for on blue primary elements */
+    --secondary: 220 10% 20%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 220 10% 15%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 220 10% 50%; /* Kept accent grey for non-primary highlights */
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 220 10% 25%;
+    --input: 220 10% 15%;
+    --ring: 205 85% 35%; /* Darker Blue for rings (e.g., slider focus) */
+    --chart-1: 220 10% 60%;
+    --chart-2: 220 10% 50%;
+    --chart-3: 220 10% 40%;
+    --chart-4: 220 10% 30%;
+    --chart-5: 220 10% 20%;
+    /* Sidebar variables for black and grey dark theme */
+    --sidebar-background: 220 10% 8%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 220 10% 60%;
+    --sidebar-primary-foreground: 220 10% 10%;
+    --sidebar-accent: 220 10% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 220 10% 20%;
+    --sidebar-ring: 220 10% 70%;
+  }
+
+  .theme-forest {
+    --background: 120 25% 15%; /* Dark Green */
+    --foreground: 120 15% 90%; /* Light Greenish White */
+    --card: 120 20% 20%;        /* Darker Green for Cards */
+    --card-foreground: 120 15% 85%;
+    --popover: 120 20% 18%;     /* Very Dark Green for Popovers */
+    --popover-foreground: 120 15% 85%;
+    --primary: 130 45% 40%;     /* Medium Forest Green */
+    --primary-foreground: 130 20% 95%; /* Very Light Green for text on Primary */
+    --secondary: 110 30% 28%;   /* Muted Olive Green */
+    --secondary-foreground: 110 15% 80%;
+    --muted: 100 20% 22%;       /* Dark, Desaturated Green */
+    --muted-foreground: 100 15% 55%;
+    --accent: 90 35% 45%;       /* Brighter Leaf Green */
+    --accent-foreground: 90 15% 95%;
+    --destructive: 0 65% 50%;    /* Standard Red for Destructive */
+    --destructive-foreground: 0 0% 98%;
+    --border: 120 20% 30%;      /* Dark Green Border */
+    --input: 120 25% 20%;       /* Dark Green Input Background */
+    --ring: 130 45% 50%;        /* Slightly Brighter Forest Green for Ring */
+    --chart-1: 130 40% 50%;
+    --chart-2: 110 35% 40%;
+    --chart-3: 90 30% 35%;
+    --chart-4: 140 30% 60%;
+    --chart-5: 80 25% 40%;
+    --radius: 0.5rem;
+    --sidebar-background: 120 28% 12%;
+    --sidebar-foreground: 120 12% 88%;
+    --sidebar-primary: 130 40% 45%;
+    --sidebar-primary-foreground: 130 18% 92%;
+    --sidebar-accent: 120 22% 25%;
+    --sidebar-accent-foreground: 120 12% 85%;
+    --sidebar-border: 120 18% 28%;
+    --sidebar-ring: 130 40% 55%;
+  }
+
+  .theme-dracula {
+    --background: 231 15% 18%; /* #282a36 */
+    --foreground: 60 30% 96%; /* #f8f8f2 */
+    --card: 232 14% 31%; /* #44475a */
+    --card-foreground: 60 30% 96%; /* #f8f8f2 */
+    --popover: 232 14% 31%; /* #44475a */
+    --popover-foreground: 60 30% 96%; /* #f8f8f2 */
+    --primary: 190 95% 77%; /* #8be9fd Cyan */
+    --primary-foreground: 231 15% 18%; /* Dark background for contrast with Cyan */
+    --secondary: 260 89% 78%; /* #bd93f9 Purple */
+    --secondary-foreground: 60 30% 96%; /* Light text for contrast with Purple */
+    --muted: 232 14% 40%; /* Slightly lighter than card for muted background elements */
+    --muted-foreground: 225 25% 52%; /* #6272a4 Comment */
+    --accent: 322 100% 73%; /* #ff79c6 Pink */
+    --accent-foreground: 231 15% 18%; /* Dark background for contrast with Pink */
+    --destructive: 0 100% 67%; /* #ff5555 Red */
+    --destructive-foreground: 60 30% 96%; /* Light text for contrast with Red */
+    --border: 232 14% 40%; /* Based on Current Line/Card, slightly lighter */
+    --input: 232 14% 31%; /* #44475a Current Line/Card */
+    --ring: 190 95% 77%; /* #8be9fd Cyan */
+    --chart-1: 139 95% 64%; /* #50fa7b Green */
+    --chart-2: 31 100% 71%; /* #ffb86c Orange */
+    --chart-3: 65 93% 76%; /* #f1fa8c Yellow */
+    --chart-4: 322 100% 73%; /* #ff79c6 Pink */
+    --chart-5: 190 95% 77%; /* #8be9fd Cyan */
+    --radius: 0.5rem;
+    --sidebar-background: 231 15% 15%; /* Slightly darker than main background */
+    --sidebar-foreground: 60 30% 90%;  /* Slightly dimmer than main foreground */
+    --sidebar-primary: 190 95% 77%; /* Cyan */
+    --sidebar-primary-foreground: 231 15% 18%; /* Dark background */
+    --sidebar-accent: 322 100% 73%; /* Pink */
+    --sidebar-accent-foreground: 231 15% 18%; /* Dark background */
+    --sidebar-border: 232 14% 25%; /* Darker than card background */
+    --sidebar-ring: 190 95% 77%; /* Cyan */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), sans-serif;
+  }
 }
