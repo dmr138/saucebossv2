@@ -65,7 +65,7 @@ export function ThemeProvider({
     let initialPreference: ThemePreference;
     try {
       const storedTheme = window.localStorage.getItem(storageKey) as ThemePreference | null;
-      if (storedTheme && (Object.values(THEMES).includes(storedTheme as ThemeClassName) || storedTheme === 'system')) {
+      if (storedTheme === 'system' || Object.values(THEMES).includes(storedTheme as ThemeClassName)) {
         initialPreference = storedTheme;
       } else {
         initialPreference = defaultTheme;
